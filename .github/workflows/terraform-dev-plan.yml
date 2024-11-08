@@ -12,7 +12,7 @@ env:
 
 jobs:
   aks:
-    name: Terraform Vnet Plan and Validations
+    name: AKS Plan and Validations
     runs-on: ubuntu-latest
     env:
       WORKING_DIRECTORY: terraform/environments/dev/aks
