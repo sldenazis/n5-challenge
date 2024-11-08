@@ -1,0 +1,57 @@
+name: 'Terraform DEV PR Plan and Validations'
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'terraform/environments/dev/**'
+
+env:
+  TERRAFORM_VERSION: 1.9.8
+
+jobs:
+  vnet:
+    name: Terraform Vnet Plan and Validations
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIRECTORY: terraform/environments/dev/aks
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Use Node.js 18.x'
+        uses: actions/setup-node@v1
+        with:
+          node_version: 18.x
+
+      - name: 'Use terraform ${{ env.TERRAFORM_VERSION }}'
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: 'Terraform fmt'
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform init'
+        id: init
+        run: terraform init -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_ACCESS_KEY }}"
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform validate'
+        id: validate
+        run: terraform validate -no-color
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform plan'
+        id: plan
+        run: terraform plan -no-color \
+          -var client_id="${{ secrets.ARM_CLIENT_ID }}" \
+          -var client_certificate_password="${{ secrets.ARM_CLIENT_CERTIFICATE_PASSWORD }}" \
+          -var client_certificate="${{ secrets.ARM_CLIENT_CERTIFICATE }}" \
+          -var tenant_id="${{ secrets.ARM_TENTANT_ID }}" \
+          -var subscription_id="${{ secrets.ARM_SUBSCRIPTION_ID }}"
+        working-directory: ${{ env.WORKING_DIRECTORY }}
