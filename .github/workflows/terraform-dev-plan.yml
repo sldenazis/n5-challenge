@@ -11,11 +11,11 @@ env:
   TERRAFORM_VERSION: 1.9.8
 
 jobs:
-  vnet:
+  aks:
     name: Terraform Vnet Plan and Validations
     runs-on: ubuntu-latest
     env:
-      WORKING_DIRECTORY: terraform/environments/dev/vnet
+      WORKING_DIRECTORY: terraform/environments/dev/aks
 
     steps:
       - name: 'Checkout'
