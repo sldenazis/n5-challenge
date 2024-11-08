@@ -15,7 +15,7 @@ jobs:
     name: Terraform Vnet Plan and Validations
     runs-on: ubuntu-latest
     env:
-      WORKING_DIRECTORY: terraform/environments/dev/aks
+      WORKING_DIRECTORY: terraform/environments/dev/vnet
 
     steps:
       - name: 'Checkout'
