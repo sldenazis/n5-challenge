@@ -1,7 +1,7 @@
 variable "location" {
   description = "The location/region where the infrastructure will be deployed."
   type        = string
-  default     = "West Europe"
+  default     = "East US"
 }
 
 variable "environment" {
