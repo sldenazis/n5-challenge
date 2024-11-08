@@ -1,0 +1,53 @@
+name: 'Terraform STG PR Plan and Validations'
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'terraform/environments/stg/**'
+
+env:
+  TERRAFORM_VERSION: 1.9.8
+
+jobs:
+  aks:
+    name: Terraform Vnet Plan and Validations
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIRECTORY: terraform/environments/stg/aks
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Use terraform ${{ env.TERRAFORM_VERSION }}'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: 'Terraform fmt'
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform init'
+        id: init
+        run: terraform init -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_ACCESS_KEY }}"
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform validate'
+        id: validate
+        run: terraform validate
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: 'Terraform plan'
+        id: plan
+        run: |
+          terraform plan \
+            -var client_id="${{ secrets.ARM_CLIENT_ID }}" \
+            -var client_certificate_password="${{ secrets.ARM_CLIENT_CERTIFICATE_PASSWORD }}" \
+            -var client_certificate="${{ secrets.ARM_CLIENT_CERTIFICATE }}" \
+            -var tenant_id="${{ secrets.ARM_TENANT_ID }}" \
+            -var subscription_id="${{ secrets.ARM_SUBSCRIPTION_ID }}"
+        working-directory: ${{ env.WORKING_DIRECTORY }}
