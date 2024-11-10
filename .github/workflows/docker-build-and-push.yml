@@ -11,6 +11,7 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -29,12 +30,12 @@ jobs:
 
       - name: Set short SHA
         id: short_sha
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm/v8,linux/arm/v7
           push: true
-          tags: santiagold/hello:plain-text,santiagold/hello:${{ steps.vars.outputs.short_sha }}
+          tags: santiagold/hello:plain-text,santiagold/hello:${{ steps.short_sha.outputs.short_sha }}
           context: ./docker/
