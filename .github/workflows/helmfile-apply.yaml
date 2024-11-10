@@ -34,7 +34,7 @@ jobs:
 
       - name: Set short SHA
         id: short_sha
-        run: echo ::set-env name=SHORT_SHA::$(echo $GITHUB_SHA | cut -c1-7)
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Helmfile Apply Dev
         uses: helmfile/helmfile-action@v1.9.0
