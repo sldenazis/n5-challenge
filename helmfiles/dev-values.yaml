@@ -1,0 +1,8 @@
+environment: "dev"
+
+image:
+  repository: xxxx/hello
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "plain-text"
