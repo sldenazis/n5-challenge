@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
       - name: Azure login
         id: login
         uses: azure/login@v1.4.3
@@ -35,6 +38,7 @@ jobs:
       - name: Helmfile Diff Dev
         uses: helmfile/helmfile-action@v1.0.0
         with:
+          helmfile-workdirectory: "./helmfiles/"
           helmfile-version: 'v0.150.0'
           helm-version: 'v3.11.0'
           helm-plugins: >
@@ -42,11 +46,11 @@ jobs:
             https://github.com/jkroepke/helm-secrets
           helmfile-args: diff --environment dev
           helmfile-auto-init: "false"
-          helmfile-workdirectory: "./helmfiles/"
 
       - name: Helmfile Diff Stage
         uses: helmfile/helmfile-action@v1.0.0
         with:
+          helmfile-workdirectory: "./helmfiles/"
           helmfile-version: 'v0.150.0'
           helm-version: 'v3.11.0'
           helm-plugins: >
@@ -54,4 +58,3 @@ jobs:
             https://github.com/jkroepke/helm-secrets
           helmfile-args: diff --environment stage
           helmfile-auto-init: "false"
-          helmfile-workdirectory: "./helmfiles/"
