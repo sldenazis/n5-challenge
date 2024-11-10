@@ -1,0 +1,32 @@
+name: Test Environments
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    name: Test Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure login
+        id: login
+        uses: azure/login@v1.4.3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get AKS config
+        id: set-context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+
+      - name: Setup kubectl
+        id: install-kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Check dev instance response
+        run: kubectl exec -t deployment/n5challenge -n n5challenge-dev -- curl -s localhost
+
+      - name: Check stage instance response
+        run: kubectl exec -t deployment/n5challenge -n n5challenge-stage -- curl -s localhost

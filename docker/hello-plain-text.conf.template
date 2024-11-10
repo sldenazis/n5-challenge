@@ -5,6 +5,6 @@ server {
     location / {
         default_type text/plain;
         expires -1;
-        return 200 'Environment: ${ENVIRONMENT}\nServer address: $server_addr:$server_port\nServer name: $hostname\nDate: $time_local\nURI: $request_uri\nRequest ID: $request_id\n';
+        return 200 'Environment: ${ENVIRONMENT}\nSecret value: ${N5SECRET}\nServer address: $server_addr:$server_port\nServer name: $hostname\nDate: $time_local\nURI: $request_uri\nRequest ID: $request_id\n';
     }
 }
