@@ -30,5 +30,10 @@ jobs:
         id: destroy
         run: |
           terraform destroy \
-            -auto-approve
+            -auto-approve \
+            -var client_id="${{ secrets.ARM_CLIENT_ID }}" \
+            -var client_certificate_password="${{ secrets.ARM_CLIENT_CERTIFICATE_PASSWORD }}" \
+            -var client_certificate="${{ secrets.ARM_CLIENT_CERTIFICATE }}" \
+            -var tenant_id="${{ secrets.ARM_TENANT_ID }}" \
+            -var subscription_id="${{ secrets.ARM_SUBSCRIPTION_ID }}"
         working-directory: ${{ env.WORKING_DIRECTORY }}
