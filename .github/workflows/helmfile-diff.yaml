@@ -36,9 +36,9 @@ jobs:
         run: kubectl get node
 
       - name: Helmfile Diff Dev
-        uses: helmfile/helmfile-action@v1.0.0
+        uses: helmfile/helmfile-action@v1.9.0
         with:
-          helmfile-workdirectory: "./helmfiles/"
+          helmfile-workdirectory: "helmfiles/"
           helmfile-version: 'v0.150.0'
           helm-version: 'v3.11.0'
           helm-plugins: >
@@ -48,9 +48,9 @@ jobs:
           helmfile-auto-init: "false"
 
       - name: Helmfile Diff Stage
-        uses: helmfile/helmfile-action@v1.0.0
+        uses: helmfile/helmfile-action@v1.9.0
         with:
-          helmfile-workdirectory: "./helmfiles/"
+          helmfile-workdirectory: "helmfiles/"
           helmfile-version: 'v0.150.0'
           helm-version: 'v3.11.0'
           helm-plugins: >
