@@ -29,4 +29,5 @@ jobs:
         with:
           push: true
           tags: santiagold/hello:plain-text
-          context: ./docker/
+          context: ./docker
+          file: ./docker/Dockerfile
