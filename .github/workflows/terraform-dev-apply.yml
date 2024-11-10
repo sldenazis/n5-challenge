@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'terraform/environments/dev/**'
 
 env:
   TERRAFORM_VERSION: 1.9.8
