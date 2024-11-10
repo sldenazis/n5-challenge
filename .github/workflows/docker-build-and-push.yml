@@ -1,12 +1,12 @@
 name: Docker Build and Push
 
 on:
-  push:
+  workflow_run:
     branches:
       - main
-    paths:
-      - docker/**
-      - .github/workflows/docker-build-and-push.yml
+    workflows: ["Terraform DEV Apply"]
+    types:
+      - completed
 
 jobs:
   docker:
@@ -27,10 +27,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set short SHA
+        id: short_sha
+        run: echo ::set-env name=SHORT_SHA::$(echo $GITHUB_SHA | cut -c1-7)
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm/v8,linux/arm/v7
           push: true
-          tags: santiagold/hello:plain-text
+          tags: santiagold/hello:plain-text,santiagold/hello:${{ steps.vars.outputs.short_sha }}
           context: ./docker/
