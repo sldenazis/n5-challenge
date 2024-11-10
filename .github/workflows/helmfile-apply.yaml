@@ -1,9 +1,13 @@
-name: Helmfile Diff
+name: Helmfile Apply
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+  workflow_run:
+    workflows: ["Terraform DEV Apply"]
+    types:
+      - completed
 
 jobs:
   build:
@@ -32,7 +36,7 @@ jobs:
       - name: Get Nodes
         run: kubectl get node
 
-      - name: Helmfile Diff Dev
+      - name: Helmfile Apply Dev
         uses: helmfile/helmfile-action@v1.9.0
         with:
           helmfile-workdirectory: "helmfiles/"
@@ -41,10 +45,10 @@ jobs:
           helm-plugins: >
             https://github.com/databus23/helm-diff,
             https://github.com/jkroepke/helm-secrets
-          helmfile-args: diff --environment dev
+          helmfile-args: apply --environment dev
           helmfile-auto-init: "false"
 
-      - name: Helmfile Diff Stage
+      - name: Helmfile Apply Stage
         uses: helmfile/helmfile-action@v1.9.0
         with:
           helmfile-workdirectory: "helmfiles/"
@@ -53,5 +57,5 @@ jobs:
           helm-plugins: >
             https://github.com/databus23/helm-diff,
             https://github.com/jkroepke/helm-secrets
-          helmfile-args: diff --environment stage
+          helmfile-args: apply --environment stage
           helmfile-auto-init: "false"
