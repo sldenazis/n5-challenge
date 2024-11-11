@@ -18,6 +18,7 @@ releases:
     chart: ../charts/n5challenge
     createNamespace: true
     values:
-      - environment: {{ .Environment.Values.environment }}
+      - env:
+          environment: {{ .Environment.Values.environment }}
       - secrets:
           n5secret: {{ .Environment.Values.secrets.n5secret | fetchSecretValue }}
