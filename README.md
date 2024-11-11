@@ -127,4 +127,5 @@ This workflow is triggered manually, it uses kubectl to make a request to nginx 
 I'm hosting everything on this same repository just to keep things simple for this test.
 For a real-world scenario, I would separate the terraform code and the helm charts into their own repositories, and I would use a private docker registry to store the images.
 For terraform itself I would seperate the modules into their own repositories.
-The services deployed on aks are not exposed outside the cluster on purpose, for a real-world scenario I would add an ingress controller and a public IP to access the services.
+The services deployed on AKS are not exposed outside the cluster on purpose, for a real-world scenario I would add an ingress controller and a public IP to access the services.
+The quality of service used for the pods is `BestEffort`, since this AKS cluster is created just for this service and is not critical, I don't care about the pods being evicted or rescheduled. For production workloads I would go for `Guaranteed` or `Burstable` QoS.
