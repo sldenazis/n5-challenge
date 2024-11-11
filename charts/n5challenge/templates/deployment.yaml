@@ -38,7 +38,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: ENVIRONMENT
-              value: {{ .Values.environment }}
+              value: {{ .Values.env.environment }}
             - name: N5SECRET
               valueFrom:
                 secretKeyRef:

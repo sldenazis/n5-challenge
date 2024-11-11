@@ -13,7 +13,10 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "plain-text"
 
-environment: "changeme"
+# To customize the deployment template
+env:
+  environment: "changeme"
+
 secrets:
   n5secret: "changeme"
 
